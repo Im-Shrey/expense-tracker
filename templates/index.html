@@ -12,9 +12,17 @@
 
 <body>
 
-    <h1>Welcome to Python Expense Tracker!</h1>
+    <h1>Welcome to {{ application_name }}!</h1> 
 
     <p>Manage your income and expenses in one place.</p>
+
+    <h2>Available Categories:</h2>
+
+    <ul>
+        {% for category in categories %}
+            <li>{{ category }}</li>
+        {% endfor %}
+    </ul>
 
 </body>
 
