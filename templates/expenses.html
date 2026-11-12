@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Saved Expenses</title>
+</head>
+
+<body>
+
+    <h1>My Expenses</h1>
+
+    {% if expenses %}
+
+        <table border="1">
+
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date Added</th>
+            </tr>
+
+            {% for expense in expenses %}
+
+                <tr>
+                    <td>{{ expense["id"] }}</td>
+                    <td>{{ expense["description"] }}</td>
+                    <td>{{ expense["amount"] }}</td>
+                    <td>{{ expense["category"] }}</td>
+                    <td>{{ expense["created_at"] }}</td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+
+        <p>No expenses have been recorded yet.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('add_expense') }}">
+        Add Another Expense
+    </a>
+
+</body>
+
+</html>
