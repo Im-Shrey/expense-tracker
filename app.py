@@ -134,6 +134,129 @@ def view_expenses():
         expenses=expenses
     )
     
+@app.route("/edit-expense/<int:expense_id>", methods=["GET", "POST"])
+def edit_expense(expense_id):
+
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+
+    try:
+        expense = connection.execute(
+            "SELECT * FROM expenses WHERE id = ?",
+            (expense_id,)
+        ).fetchone()
+    finally:
+        connection.close()
+
+    if expense is None:
+        return "Expense not found", 404
+
+    if request.method == "POST":
+
+        description = request.form.get("description", "").strip()
+        amount_input = request.form.get("amount", "").strip()
+        category = request.form.get("category", "")
+
+        errors = []
+
+        if not description:
+            errors.append("Description cannot be empty.")
+
+        try:
+            amount = Decimal(amount_input)
+
+            if not amount.is_finite() or amount <= 0:
+                errors.append("Amount must be greater than zero.")
+
+        except InvalidOperation:
+            amount = None
+            errors.append("Please enter a valid amount.")
+
+        allowed_categories = [
+            "Food", "Transport", "Education",
+            "Shopping", "Entertainment"
+        ]
+
+        if category not in allowed_categories:
+            errors.append("Please select a valid category.")
+
+        form_data = {
+            "description": description,
+            "amount": amount_input,
+            "category": category
+        }
+
+        if errors:
+            return render_template(
+                "edit_expense.html",
+                expense=expense,
+                errors=errors,
+                form_data=form_data
+            )
+
+        connection = sqlite3.connect(DB_PATH)
+
+        try:
+            connection.execute(
+                """
+                UPDATE expenses
+                SET description = ?, amount = ?, category = ?
+                WHERE id = ?
+                """,
+                (description, str(amount), category, expense_id)
+            )
+
+            connection.commit()
+
+        finally:
+            connection.close()
+
+        return redirect(url_for("view_expenses"))
+
+    return render_template(
+        "edit_expense.html",
+        expense=expense
+    )
+    
+@app.route("/delete-expense/<int:expense_id>", methods=["GET", "POST"])
+def delete_expense(expense_id):
+
+    connection = sqlite3.connect(DB_PATH)
+    connection.row_factory = sqlite3.Row
+
+    try:
+        expense = connection.execute(
+            "SELECT * FROM expenses WHERE id = ?",
+            (expense_id,)
+        ).fetchone()
+    finally:
+        connection.close()
+
+    if expense is None:
+        return "Expense not found", 404
+
+    if request.method == "POST":
+
+        connection = sqlite3.connect(DB_PATH)
+
+        try:
+            connection.execute(
+                "DELETE FROM expenses WHERE id = ?",
+                (expense_id,)
+            )
+
+            connection.commit()
+
+        finally:
+            connection.close()
+
+        return redirect(url_for("view_expenses"))
+
+    return render_template(
+        "delete_expense.html",
+        expense=expense
+    )
+    
 init_db()
 
 # Running the application

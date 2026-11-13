@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Expense</title>
+</head>
+
+<body>
+
+    <a href="{{ url_for('view_expenses') }}"
+       aria-label="Cancel editing"
+       style="float: right; font-size: 28px; text-decoration: none;">
+        ×
+    </a>
+
+    <h1>Edit Expense</h1>
+
+    {% if errors %}
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <form method="POST">
+
+        <label>Description:</label>
+        <input
+            type="text"
+            name="description"
+            value="{{ form_data.description if form_data else expense['description'] }}"
+            required
+        >
+
+        <br><br>
+
+        <label>Amount:</label>
+        <input
+            type="number"
+            name="amount"
+            step="0.01"
+            min="0.01"
+            value="{{ form_data.amount if form_data else expense['amount'] }}"
+            required
+        >
+
+        <br><br>
+
+        <label>Category:</label>
+
+        <select name="category" required>
+            {% for item in ["Food", "Transport", "Education", "Shopping", "Entertainment"] %}
+                <option
+                    value="{{ item }}"
+                    {% if (form_data.category if form_data else expense['category']) == item %}
+                        selected
+                    {% endif %}
+                >
+                    {{ item }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+
+</body>
+</html>
