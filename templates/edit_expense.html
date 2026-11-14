@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Expense</title>
+
+    {% extends "base.html" %}
+    <title>{% block title %}Edit Expense{% endblock %}</title>
 </head>
 
 <body>
 
+    {% block content %}
     <a href="{{ url_for('view_expenses') }}"
        aria-label="Cancel editing"
        style="float: right; font-size: 28px; text-decoration: none;">
@@ -68,6 +71,7 @@
         <button type="submit">Save Changes</button>
 
     </form>
+    {% endblock %}
 
 </body>
 </html>

@@ -3,12 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Expense</title>
+    {% extends "base.html" %}
+    
+    <title>{% block title %}Add Expense{% endblock %}</title>
 </head>
 
 <body>
 
-    <h1>Add a New Expense</h1>
+    {% block content %}
+    <div class="page-header">
+        <h1>Add Expense</h1>
+
+        <a href="{{ url_for('view_expenses') }}"
+        class="close-button"
+        aria-label="Cancel and return to expenses">
+            ×
+        </a>
+    </div>
 
     {% if errors %}
 
@@ -58,6 +69,7 @@
         <button type="submit">Submit Expense</button>
 
     </form>
+    {% endblock %}
 
 </body>
 
