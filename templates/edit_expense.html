@@ -11,66 +11,105 @@
 <body>
 
     {% block content %}
-    <a href="{{ url_for('view_expenses') }}"
-       aria-label="Cancel editing"
-       style="float: right; font-size: 28px; text-decoration: none;">
-        ×
-    </a>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
 
-    <h1>Edit Expense</h1>
+                <div class="card shadow-sm">
 
-    {% if errors %}
-        <ul>
-            {% for error in errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Edit Expense</h3>
 
-    <form method="POST">
+                        <a href="{{ url_for('view_expenses') }}"
+                        class="btn-close"
+                        aria-label="Cancel editing">
+                        </a>
+                    </div>
 
-        <label>Description:</label>
-        <input
-            type="text"
-            name="description"
-            value="{{ form_data.description if form_data else expense['description'] }}"
-            required
-        >
+                    <div class="card-body">
 
-        <br><br>
+                        {% if errors %}
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
 
-        <label>Amount:</label>
-        <input
-            type="number"
-            name="amount"
-            step="0.01"
-            min="0.01"
-            value="{{ form_data.amount if form_data else expense['amount'] }}"
-            required
-        >
+                        <form method="POST">
 
-        <br><br>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">
+                                    Description
+                                </label>
 
-        <label>Category:</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="description"
+                                    name="description"
+                                    value="{{ form_data.description if form_data else expense['description'] }}"
+                                    required
+                                >
+                            </div>
 
-        <select name="category" required>
-            {% for item in ["Food", "Transport", "Education", "Shopping", "Entertainment"] %}
-                <option
-                    value="{{ item }}"
-                    {% if (form_data.category if form_data else expense['category']) == item %}
-                        selected
-                    {% endif %}
-                >
-                    {{ item }}
-                </option>
-            {% endfor %}
-        </select>
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">
+                                    Amount
+                                </label>
 
-        <br><br>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="amount"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    value="{{ form_data.amount if form_data else expense['amount'] }}"
+                                    required
+                                >
+                            </div>
 
-        <button type="submit">Save Changes</button>
+                            <div class="mb-4">
+                                <label for="category" class="form-label">
+                                    Category
+                                </label>
 
-    </form>
+                                <select
+                                    class="form-select"
+                                    id="category"
+                                    name="category"
+                                    required
+                                >
+                                    {% for item in ["Food", "Transport", "Education", "Shopping", "Entertainment"] %}
+                                        <option
+                                            value="{{ item }}"
+                                            {% if (form_data.category if form_data else expense['category']) == item %}
+                                                selected
+                                            {% endif %}
+                                        >
+                                            {{ item }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                Save Changes
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     {% endblock %}
 
 </body>

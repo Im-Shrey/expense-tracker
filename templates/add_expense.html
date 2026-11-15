@@ -11,64 +11,101 @@
 <body>
 
     {% block content %}
-    <div class="page-header">
-        <h1>Add Expense</h1>
 
-        <a href="{{ url_for('view_expenses') }}"
-        class="close-button"
-        aria-label="Cancel and return to expenses">
-            ×
-        </a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="mb-0">Add New Expense</h3>
+
+                        <a href="{{ url_for('view_expenses') }}"
+                        class="btn-close"
+                        aria-label="Cancel and return to expenses">
+                        </a>
+                    </div>
+
+                    <div class="card-body">
+
+                        {% if errors %}
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    {% for error in errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <form method="POST">
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">
+                                    Description
+                                </label>
+
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="description"
+                                    name="description"
+                                    placeholder="e.g. Grocery shopping"
+                                    required
+                                >
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="amount"
+                                    name="amount"
+                                    step="0.01"
+                                    min="0.01"
+                                    placeholder="Enter amount"
+                                    required
+                                >
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="category" class="form-label">
+                                    Category
+                                </label>
+
+                                <select
+                                    class="form-select"
+                                    id="category"
+                                    name="category"
+                                    required
+                                >
+                                    <option value="">Select a category</option>
+                                    <option value="Food">Food</option>
+                                    <option value="Transport">Transport</option>
+                                    <option value="Education">Education</option>
+                                    <option value="Shopping">Shopping</option>
+                                    <option value="Entertainment">Entertainment</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                Save Expense
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    {% if errors %}
-
-        <ul>
-            {% for error in errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-
-    {% endif %}
-
-    <form method="POST">
-
-        <label>Expense Description:</label>
-        <input
-            type="text"
-            name="description"
-            required
-        >
-
-        <br><br>
-
-        <label>Amount:</label>
-        <input
-            type="number"
-            name="amount"
-            step="0.01"
-            min="0.01"
-            required
-        >
-
-        <br><br>
-
-        <label>Category:</label>
-
-        <select name="category" required>
-            <option value="">Select Category</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Education">Education</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Entertainment">Entertainment</option>
-        </select>
-
-        <br><br>
-
-        <button type="submit">Submit Expense</button>
-
-    </form>
     {% endblock %}
 
 </body>
