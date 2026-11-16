@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from decimal import Decimal, InvalidOperation
 import sqlite3
 from pathlib import Path
 
 # Creating first application
 app = Flask(__name__)
+
+app.secret_key = "afyZ9ohgiew*ppi9@kfldajkx"
 
 DB_PATH = Path("database/expenses.db")
 
@@ -109,6 +111,8 @@ def add_expense():
 
         finally:
             connection.close()
+            
+        flash("Expense added successfully!", "success")
 
         return redirect(url_for("view_expenses"))
 
@@ -210,6 +214,8 @@ def edit_expense(expense_id):
 
         finally:
             connection.close()
+            
+        flash("Expense updated successfully!", "success")
 
         return redirect(url_for("view_expenses"))
 
@@ -249,6 +255,8 @@ def delete_expense(expense_id):
 
         finally:
             connection.close()
+            
+        flash("Expense deleted successfully!", "success")
 
         return redirect(url_for("view_expenses"))
 
